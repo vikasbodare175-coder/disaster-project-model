@@ -1,0 +1,99 @@
+{
+  "entities": {
+    "userProfile": {
+      "title": "UserProfile",
+      "description": "Emergency personnel user profile",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "photoURL": { "type": "string", "maxLength": 512 },
+        "role": { "type": "string", "enum": ["officer", "responder", "viewer"] },
+        "createdAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["uid", "email"]
+    },
+    "hazardIncident": {
+      "title": "HazardIncident",
+      "description": "Real-time hazard incident report",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "regionId": { "type": "string", "maxLength": 64 },
+        "category": { "type": "string", "maxLength": 64 },
+        "riskLevel": { "type": "string", "enum": ["Low Risk", "Medium Risk", "High Risk"] },
+        "locationName": { "type": "string", "maxLength": 200 },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "affectedPopulation": { "type": "string", "maxLength": 64 },
+        "affectedAreaAcres": { "type": "number" },
+        "severityScore": { "type": "number" },
+        "status": { "type": "string", "enum": ["Active", "Investigating", "Contained", "Resolved"] },
+        "description": { "type": "string", "maxLength": 2000 },
+        "createdBy": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["id", "title", "regionId", "category", "riskLevel", "locationName", "latitude", "longitude", "status"]
+    },
+    "citizenSOS": {
+      "title": "CitizenSOS",
+      "description": "Citizen distress call request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "citizenName": { "type": "string", "maxLength": 128 },
+        "phoneNumber": { "type": "string", "maxLength": 32 },
+        "regionId": { "type": "string", "maxLength": 64 },
+        "locationName": { "type": "string", "maxLength": 200 },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "urgency": { "type": "string", "enum": ["Life Threatening", "Medical Emergency", "Water Trapped", "Food / Water Depleted"] },
+        "peopleCount": { "type": "number" },
+        "status": { "type": "string", "enum": ["Pending Triage", "Unit Dispatched", "Rescued"] },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "createdBy": { "type": "string", "maxLength": 128 }
+      },
+      "required": ["id", "citizenName", "locationName", "urgency", "peopleCount", "status"]
+    },
+    "evacuationShelter": {
+      "title": "EvacuationShelter",
+      "description": "Designated relief shelter",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 200 },
+        "regionId": { "type": "string", "maxLength": 64 },
+        "address": { "type": "string", "maxLength": 300 },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "totalCapacity": { "type": "number" },
+        "currentOccupancy": { "type": "number" },
+        "status": { "type": "string", "enum": ["Open & Accepting", "Near Capacity", "Full", "Standby"] },
+        "medicalStaffPresent": { "type": "number" },
+        "foodWaterDays": { "type": "number" },
+        "hasBackupPower": { "type": "boolean" },
+        "contactNumber": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "name", "regionId", "totalCapacity", "currentOccupancy", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "userProfile",
+      "description": "User profiles for authenticated officers"
+    },
+    "/incidents/{incidentId}": {
+      "schema": "hazardIncident",
+      "description": "Hazard incident pins across regions"
+    },
+    "/sos_calls/{callId}": {
+      "schema": "citizenSOS",
+      "description": "Incoming citizen SOS helpline calls"
+    },
+    "/shelters/{shelterId}": {
+      "schema": "evacuationShelter",
+      "description": "Evacuation shelter logistics and occupancy records"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "DisasterMonitor - Disaster Management Dashboard",
+  "description": "Comprehensive Disaster Management Dashboard to monitor disaster risks, affected zones, safety ratings, and hazard alerts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
